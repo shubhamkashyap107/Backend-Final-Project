@@ -5,7 +5,7 @@ var validator = require('validator');
 const userSchema = new mongoose.Schema({
     firstName : {
         type : String,
-        required : true,
+        // required : true,
         trim : true,
         minLength : 2,
         maxLength : 15
@@ -49,7 +49,7 @@ const userSchema = new mongoose.Schema({
 
     dateOfBirth : {
         type : String,
-        required : true,
+        // required : true,
         trim : true,
         validate(value){
             const flag = validator.isDate(value)
@@ -59,7 +59,7 @@ const userSchema = new mongoose.Schema({
             }
         }
     }
-})
+}, {timestamps : true})
 
 
 
