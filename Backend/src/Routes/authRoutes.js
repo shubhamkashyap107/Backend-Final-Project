@@ -4,6 +4,8 @@ const {User} = require("../models/user")
 const bcrypt = require("bcrypt")
 const validator = require("validator")
 const jwt = require("jsonwebtoken")
+const { isLoggedIn } = require("../middlewares/isLoggedIn")
+
 
 router.post("/signup" ,async(req, res) => {
     try{
@@ -46,6 +48,15 @@ router.post("/login", async(req, res) => {
     
 })
 
+router.get("/logout", isLoggedIn ,async(req, res) => {
+   try {
+        res.cookie("token", null)
+        res.status(200).json({"msg" : "User logged out"})
+   } catch (error) {
+        res.json({"msg" : error.msg})
+    
+   }
+})
 
 
 

@@ -1,7 +1,9 @@
 const express = require("express")
 const app = express()
 const {authRouter} = require("./Routes/authRoutes")
+const {profileRouter} = require("./Routes/profileRoute")
 const {connectDB} = require("./config/db")
+const cookieParser = require('cookie-parser')
 require("dotenv").config()
 
 connectDB()
@@ -15,8 +17,7 @@ connectDB()
     console.log("DB not Connected")
 })
 
-
-
-
 app.use(express.json())
+app.use(cookieParser())
 app.use("/auth", authRouter)
+app.use("/profile", profileRouter)
