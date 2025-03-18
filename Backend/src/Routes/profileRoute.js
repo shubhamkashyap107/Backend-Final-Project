@@ -46,7 +46,6 @@ router.patch("/edit/password", isLoggedIn, async(req ,res) => {
     if(existingPassword == newPassword)
     {
         throw new Error("New password cannot be same as existing password");
-
     }
     const isStrong = validator.isStrongPassword(newPassword)
     if(!isStrong)
