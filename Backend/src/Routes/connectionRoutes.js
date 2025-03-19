@@ -39,6 +39,34 @@ router.post("/send/:status/:id", isLoggedIn, async(req, res) => {
     }
 })
 
+router.patch("/review/:status/:connectionRequestID", isLoggedIn , async(req, res) => {
+    try {
+        const {status} = req.params
+        const {connectionRequestID} = req.params
+        
+        const foundReq = await ConnectionRequest.findById({_id : connectionRequestID})
+        if(!foundReq.status == "interested")
+        {
+            throw new Error("Not a valid operation")
+        }
+        if(!["accepted", "rejected"].includes(status))
+        {
+            throw new Error("Not a valid status")
+        }
+        if(!foundReq.toUserId.equals(req.User._id))
+        {
+            throw new Error("Not authorised for this action")
+        }
+        // ConnectionRequest.findByIdAndUpdate(connectionRequestID, {status })
+        foundReq.status = status
+        await foundReq.save()
+
+        res.json({msg : `request ${status}`})
+    } catch (error) {
+        res.json({error : error.message})
+    }
+})
+
 
 
 
