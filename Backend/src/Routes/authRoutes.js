@@ -20,7 +20,7 @@ router.post("/signup" ,async(req, res) => {
         res.status(200).json({"msg" : "User registered successfully"})
     } catch(e)
     {
-        res.status(400).json({"msg" : e.message})
+        res.status(400).json({"msg" : "User already exists"})
     }
 })
 
@@ -43,7 +43,7 @@ router.post("/login", async(req, res) => {
         }
         else
         {
-            res.json({"msg" : "Invalid Credentials"})
+            res.status(401).json({"msg" : "Invalid Credentials"})
         }
     } catch (error) {
         res.json({"error" : "Please enter all the fields"})

@@ -6,6 +6,7 @@ const {connectionRequestRouter} = require("./Routes/connectionRoutes")
 const {userRouter} = require("./Routes/userRoutes")
 const {connectDB} = require("./config/db")
 const cookieParser = require('cookie-parser')
+const cors = require("cors")
 require("dotenv").config() // process.env.PORT process.env.DB_URL
 
 connectDB()
@@ -19,6 +20,11 @@ connectDB()
     console.log("DB not Connected")
 })
 
+
+app.use(cors({
+    credentials : true,
+    origin : "http://localhost:5173"
+}))
 app.use(express.json()) // parses req.body
 app.use(cookieParser()) // parses
 app.use("/auth", authRouter)

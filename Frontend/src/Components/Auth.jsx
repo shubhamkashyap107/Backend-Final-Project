@@ -1,15 +1,136 @@
 import React, { useState } from 'react';
+import validator, { isStrongPassword } from "validator"
+import toast, { Toaster } from 'react-hot-toast';
+import axios from "axios"
+import { useNavigate } from 'react-router-dom';
+import {baseUrl} from "../utils/constants"
 
 const Auth = () => {
 
+    const navigate = useNavigate()
     const[isSignupPage, setIsSignupPage] = useState(true)
     const[emailId, setEmailId] = useState("")
     const[username, setUsername] = useState("")
     const[password, setPassword] = useState("")
+    const[showPassword, setShowPassword] = useState(false)
 
     function toggleBtnHandler()
     {
         setIsSignupPage(!isSignupPage)
+    }
+    // async function btnClickHandler()
+    // {
+    //    try {
+    //     if(isSignupPage)
+    //         {
+    //             const flag = validator.isEmail(emailId)
+    //             console.log(flag)
+    //             // alert("Not a valid email")
+    //             if(!flag){
+    //             toast.error("Please enter a valid email")
+    //             return
+    //             }
+    //         }
+    //         if(username.length < 6)
+    //         {
+    //             toast.error("Please enter a valid username")
+    //             return
+    //         }
+    //         if(password.length < 8)
+    //         {
+    //             toast.error("Password should be of atleast 8 characters")
+    //             return
+    //         }
+    //         if(isSignupPage)
+    //         {
+    //             const flag = validator.isStrongPassword(password)
+    //             if(!flag)
+    //             {
+    //                 toast.error("Please enter a strong password")
+    //                 return
+    //             }
+        
+    //         }
+    //         if(isSignupPage)
+    //         {
+    //            const res = await axios.post("http://localhost:8080/auth/signup", {username, password, emailId}, {withCredentials : true})
+    //             if(res.data.msg == "User already exists")
+    //             {
+    //                 toast.error(res.data.msg)
+    //                 return
+    //             }
+    //             navigate("/profile")
+    //         }
+    //         else
+    //         {
+    //            try {
+    //             const res = await axios.post("http://localhost:8080/auth/login", {username, password}, {withCredentials : true})
+    //             console.log(res) 
+    //            if(res.data.msg != "User logged in successfully")
+    //             {
+    //                 toast.error(res.data.msg)
+    //                 return
+    //             }
+    //             navigate("/home")
+    //            } catch (error) {
+    //             console.log(error)
+    //            }
+    //         }
+    
+    //    } catch (error) {
+    //         toast.error(error.message)
+    //    }
+
+
+    // }
+
+    async function btnClickHandler() {
+        try {
+            if(username.length < 6)
+                {
+                    toast.error("Enter a valid email")
+                    return
+                }
+                if(isSignupPage)
+                {
+                    let flag1 = validator.isEmail(emailId)
+                    if(!flag1)
+                    {
+                        toast.error("Please enter a valid email")
+                        return
+                    }
+        
+                    let flag2 = validator.isStrongPassword(password)
+                    if(!flag2)
+                    {
+                        toast.error("Please enter a strong password")
+                        return
+                    }
+                    let res = await axios.post(baseUrl + "/auth/signup", {username, password, emailId}, {withCredentials : true})
+                    console.log(res)
+                    navigate("/profile")
+                }
+                else
+                {
+                    if(password.length < 8)
+                    {
+                        toast.error("Password should be atleast 8 characters")
+                        return
+                    }
+                    let res = await axios.post(baseUrl + "/auth/login", {username, password}, {withCredentials : true})
+                    console.log(res)
+                    navigate("/home")
+                }
+        } catch (error) {
+            if(error.status == 400)
+            {
+                toast.error("User already exists")
+            }
+            else if(error.status == 401)
+            {
+                toast.error("Invalid Credentials")
+            }
+        }
     }
 
   return (
@@ -21,6 +142,7 @@ const Auth = () => {
           onChange={(e) => {
             setEmailId(e.target.value)
           }}
+          value={emailId}
             type="email" 
             placeholder="Email" 
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -33,16 +155,23 @@ const Auth = () => {
             placeholder="Username" 
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+          <div className='relative'>
+
           <input 
            onChange={(e) => {
             setPassword(e.target.value)
           }}
-            type="password" 
+            type={showPassword ? "text" : "password"}
             placeholder="Password" 
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <button 
-            className="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition duration-300"
+          <i onClick={() => {
+            setShowPassword(!showPassword)
+          }} class={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"} absolute right-5 top-4`} ></i>
+          </div>
+
+          <button onClick={btnClickHandler}
+            className="cursor-pointer w-full bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition duration-300"
           >
             {isSignupPage ? "Sign Up" : "Log In"}
           </button>
