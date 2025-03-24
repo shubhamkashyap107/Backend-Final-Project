@@ -3,6 +3,9 @@ import React, { useState } from 'react';
 const Auth = () => {
 
     const[isSignupPage, setIsSignupPage] = useState(true)
+    const[emailId, setEmailId] = useState("")
+    const[username, setUsername] = useState("")
+    const[password, setPassword] = useState("")
 
     function toggleBtnHandler()
     {
@@ -15,16 +18,25 @@ const Auth = () => {
         <h2 className="text-2xl font-semibold text-center mb-6">{isSignupPage ? "Sign up" : "Log in"}</h2>
         <div className="space-y-4">
           {isSignupPage && <input 
+          onChange={(e) => {
+            setEmailId(e.target.value)
+          }}
             type="email" 
             placeholder="Email" 
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />}
           <input 
+           onChange={(e) => {
+            setUsername(e.target.value)
+          }}
             type="text" 
             placeholder="Username" 
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input 
+           onChange={(e) => {
+            setPassword(e.target.value)
+          }}
             type="password" 
             placeholder="Password" 
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
