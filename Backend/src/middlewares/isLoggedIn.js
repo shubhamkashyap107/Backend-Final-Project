@@ -12,6 +12,7 @@ const isLoggedIn = async(req, res, next) => {
     {
         throw new Error("Please log in")
     }
+    // console.log(foundUser)
     req.User = foundUser
     req.ID = obj._id
     next()

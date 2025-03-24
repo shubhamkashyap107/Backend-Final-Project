@@ -6,7 +6,7 @@ const {connectionRequestRouter} = require("./Routes/connectionRoutes")
 const {userRouter} = require("./Routes/userRoutes")
 const {connectDB} = require("./config/db")
 const cookieParser = require('cookie-parser')
-require("dotenv").config()
+require("dotenv").config() // process.env.PORT process.env.DB_URL
 
 connectDB()
 .then(() => {
@@ -19,8 +19,8 @@ connectDB()
     console.log("DB not Connected")
 })
 
-app.use(express.json())
-app.use(cookieParser())
+app.use(express.json()) // parses req.body
+app.use(cookieParser()) // parses
 app.use("/auth", authRouter)
 app.use("/profile", profileRouter)
 app.use("/connection", connectionRequestRouter)

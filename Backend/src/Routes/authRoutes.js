@@ -29,14 +29,17 @@ router.post("/login", async(req, res) => {
     try {
         const{username, password} = req.body
         const FoundUser = await User.findOne({username})
+        if(!FoundUser)
+        {
+            throw new Error("User does not exist")
+        }
         const flag = await bcrypt.compare(password, FoundUser.password)
         if(flag)
         {
             const token = jwt.sign({_id : FoundUser._id}, process.env.JWT_SECRET, {
                 expiresIn : "7d"
             })
-            res.cookie("token", token)
-            res.json({"msg" : "User logged in successfully"})
+            res.cookie("token", token).json({"msg" : "User logged in successfully"})
         }
         else
         {

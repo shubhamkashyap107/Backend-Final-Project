@@ -8,9 +8,10 @@ const validator = require("validator")
 
 router.get("/", isLoggedIn ,async(req, res) => {
    try {
-    // const{id} = req.params
-    // const FoundUser = await User.findById({_id : id})
-    const FoundUser = req.User
+    // console.log("OK")
+    const id = req.User._id
+    const FoundUser = await User.findById({_id : id}).select("firstName lastName username DOB interests")
+    // const FoundUser = req.User
     if(!FoundUser)
     {
         throw new Error("User does not exist")
