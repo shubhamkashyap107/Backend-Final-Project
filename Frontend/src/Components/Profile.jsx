@@ -4,30 +4,39 @@ import axios from 'axios';
 import { baseUrl } from '../utils/constants';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
+import { addUser } from '../utils/userSlice';
 
 const Profile = () => {
+  const date = new Date()
+  const temp = date.toISOString().slice(0,10) //"yyyy-mm-dd" -> ["yyyy", "mm", "dd"] -> ["yyyy" - 15, "mm", "dd"] -> yyyy-mm-dd
+  let arr = temp.split("-")
+  arr[0] = Number(arr[0]) - 18
+  const finalDate = arr.join("-")
+  // console.log(finalDate)
+
+  const dispatch = useDispatch()
+  const userSliceData = useSelector((store) => {
+    return store.user
+  })
     const navigate = useNavigate()
-    const[image, setImage] = useState("")
-    const[firstName, setFirstName] = useState("")
-    const[lastName, setLastName] = useState("")
-    const[DOB, setDOB] = useState("")
-    const[bio, setBio] = useState("")
+    const[image, setImage] = useState(userSliceData.image || "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png")
+    const[firstName, setFirstName] = useState(userSliceData.firstName || "")
+    const[lastName, setLastName] = useState(userSliceData.lastName || "")
+    const[DOB, setDOB] = useState(userSliceData.DOB || "")
+    const[bio, setBio] = useState(userSliceData.bio || "")
 
-    console.log(firstName, lastName, DOB, bio)
-
-
-    const[img, setImg] = useState("")
-    let defaultImg = "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
   return (
     <>
     <Navbar />
+    {userSliceData && 
     <div className="max-w-md mx-auto p-6 bg-white shadow-lg rounded-2xl space-y-4 mt-10 flex flex-col items-center">
-        <img className='h-[150px] w-[150px] rounded-full' src={img ? img : defaultImg} alt="" />
+        <img className='h-[150px] w-[150px] rounded-full' src={image} alt="" />
     <input
         onChange={async(e) => {
             //creating a temp , local url for displaying purposes
             const url = URL.createObjectURL(e.target.files[0])
-            setImg(url)
+            setImage(url)
 
 
             let obj = e.target.files[0]
@@ -45,6 +54,7 @@ const Profile = () => {
         className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
       />
       <input
+      value={firstName}
       onChange={(e) => {
         setFirstName(e.target.value)
       }}
@@ -53,6 +63,8 @@ const Profile = () => {
         className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
       />
       <input
+      value={lastName}
+
       onChange={(e) => {
         setLastName(e.target.value)
       }}
@@ -61,13 +73,20 @@ const Profile = () => {
         className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
       />
       <input
+      value={DOB}
+
       onChange={(e) => {
+
         setDOB(e.target.value)
       }}
+
+      max={finalDate} 
         type="date"
         className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
       />
       <textarea
+      value={bio}
+
       onChange={(e) => {
         setBio(e.target.value)
       }}
@@ -83,7 +102,9 @@ const Profile = () => {
         let res = await axios.patch(baseUrl + "/profile/edit", {firstName, lastName, DOB, image, bio}, {withCredentials : true})
         if(res.status == 202)
         {
-            console.log(res)
+            // console.log(res)
+            dispatch(addUser(res.data.data))
+            toast.success(res.data.msg)
             // navigate("/home")
         }
         else
@@ -94,6 +115,8 @@ const Profile = () => {
         Update Profile
       </button>
     </div>
+
+  }
     </>
 
   );

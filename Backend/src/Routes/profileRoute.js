@@ -29,7 +29,7 @@ router.patch("/edit" , isLoggedIn, async(req, res) => {
         const id = req.ID
         let updatedUser = await User.findByIdAndUpdate({_id : id}, {firstName, lastName,DOB, bio, image }, 
             {runValidators : true, new : true}).select("firstName lastName DOB bio image emailId username")
-            console.log(updatedUser)
+            // console.log(updatedUser)
         res.status(202).json({"msg" : "User updated successfully", "data" : updatedUser})
     } catch (error) {
         res.status(400).json({"error" : error.message})

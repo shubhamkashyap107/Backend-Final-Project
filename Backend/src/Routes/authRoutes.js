@@ -43,7 +43,10 @@ router.post("/login", async(req, res) => {
             // })
             const token = FoundUser.getJWT()
             // console.log("OK")
-            res.cookie("token", token).json({"msg" : "User logged in successfully"})
+            const{firstName, lastName, image, bio, username, DOB} = FoundUser
+            res.cookie("token", token).json({"msg" : "User logged in successfully", data : {
+                firstName, lastName, image, bio, username, DOB
+            }})
         }
         else
         {

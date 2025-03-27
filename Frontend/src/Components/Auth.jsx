@@ -4,85 +4,23 @@ import toast, { Toaster } from 'react-hot-toast';
 import axios from "axios"
 import { useNavigate } from 'react-router-dom';
 import {baseUrl} from "../utils/constants"
+import { useDispatch } from 'react-redux';
+import { addUser } from '../utils/userSlice';
 
 const Auth = () => {
-
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     const[isSignupPage, setIsSignupPage] = useState(true)
     const[emailId, setEmailId] = useState("")
-    const[username, setUsername] = useState("")
-    const[password, setPassword] = useState("")
+    const[username, setUsername] = useState("chotudon")
+    const[password, setPassword] = useState("Qwerty123!")
     const[showPassword, setShowPassword] = useState(false)
 
     function toggleBtnHandler()
     {
         setIsSignupPage(!isSignupPage)
     }
-    // async function btnClickHandler()
-    // {
-    //    try {
-    //     if(isSignupPage)
-    //         {
-    //             const flag = validator.isEmail(emailId)
-    //             console.log(flag)
-    //             // alert("Not a valid email")
-    //             if(!flag){
-    //             toast.error("Please enter a valid email")
-    //             return
-    //             }
-    //         }
-    //         if(username.length < 6)
-    //         {
-    //             toast.error("Please enter a valid username")
-    //             return
-    //         }
-    //         if(password.length < 8)
-    //         {
-    //             toast.error("Password should be of atleast 8 characters")
-    //             return
-    //         }
-    //         if(isSignupPage)
-    //         {
-    //             const flag = validator.isStrongPassword(password)
-    //             if(!flag)
-    //             {
-    //                 toast.error("Please enter a strong password")
-    //                 return
-    //             }
-        
-    //         }
-    //         if(isSignupPage)
-    //         {
-    //            const res = await axios.post("http://localhost:8080/auth/signup", {username, password, emailId}, {withCredentials : true})
-    //             if(res.data.msg == "User already exists")
-    //             {
-    //                 toast.error(res.data.msg)
-    //                 return
-    //             }
-    //             navigate("/profile")
-    //         }
-    //         else
-    //         {
-    //            try {
-    //             const res = await axios.post("http://localhost:8080/auth/login", {username, password}, {withCredentials : true})
-    //             console.log(res) 
-    //            if(res.data.msg != "User logged in successfully")
-    //             {
-    //                 toast.error(res.data.msg)
-    //                 return
-    //             }
-    //             navigate("/home")
-    //            } catch (error) {
-    //             console.log(error)
-    //            }
-    //         }
-    
-    //    } catch (error) {
-    //         toast.error(error.message)
-    //    }
 
-
-    // }
 
     async function btnClickHandler() {
         try {
@@ -108,7 +46,7 @@ const Auth = () => {
                     }
                     let res = await axios.post(baseUrl + "/auth/signup", {username, password, emailId}, {withCredentials : true})
                     console.log(res)
-                    navigate("/profile")
+                    navigate("/profile/edit")
                 }
                 else
                 {
@@ -118,7 +56,8 @@ const Auth = () => {
                         return
                     }
                     let res = await axios.post(baseUrl + "/auth/login", {username, password}, {withCredentials : true})
-                    console.log(res)
+                    // console.log(res)
+                    dispatch(addUser(res.data.data))
                     navigate("/home")
                 }
         } catch (error) {
@@ -148,6 +87,7 @@ const Auth = () => {
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />}
           <input 
+          value={username}
            onChange={(e) => {
             setUsername(e.target.value)
           }}
@@ -158,6 +98,7 @@ const Auth = () => {
           <div className='relative'>
 
           <input 
+          value={password}
            onChange={(e) => {
             setPassword(e.target.value)
           }}
