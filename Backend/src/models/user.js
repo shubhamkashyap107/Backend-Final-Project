@@ -1,5 +1,6 @@
 const mongoose = require("mongoose")
 const validator = require("validator")
+const jwt = require("jsonwebtoken")
 
 const userSchema = new mongoose.Schema({
     firstName : {
@@ -57,9 +58,34 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
-    interests : [],
+    // interests : [],
+    image : {
+        type : String,
+        validate(value)
+        {
+            const flag = validator.isURL(value)
+            if(!flag)
+            {
+                throw new Error("Not a valid URL")
+            }
+        }
+    },
+    bio : {
+        type : String,
+        minLength : 10,
+        trim : true
+    }
 }, {timestamps : true})
 
+userSchema.methods.getJWT = function(){
+    const user = this
+
+    const token = jwt.sign({_id : user._id}, process.env.JWT_SECRET, {
+        expiresIn : "7d"
+    })
+
+    return token
+}
 
 const User = mongoose.model("User", userSchema)
 

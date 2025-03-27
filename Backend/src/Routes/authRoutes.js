@@ -16,7 +16,9 @@ router.post("/signup" ,async(req, res) => {
             throw new Error("Please Enter a strong password")
         }
         const hashedPassword = await bcrypt.hash(password, 10)
-        await User.insertOne({username, emailId, password : hashedPassword})
+        let createdUser = await User.insertOne({username, emailId, password : hashedPassword})
+        const token = createdUser.getJWT()
+        res.cookie("token", token)
         res.status(200).json({"msg" : "User registered successfully"})
     } catch(e)
     {
@@ -36,9 +38,11 @@ router.post("/login", async(req, res) => {
         const flag = await bcrypt.compare(password, FoundUser.password)
         if(flag)
         {
-            const token = jwt.sign({_id : FoundUser._id}, process.env.JWT_SECRET, {
-                expiresIn : "7d"
-            })
+            // const token = jwt.sign({_id : FoundUser._id}, process.env.JWT_SECRET, {
+            //     expiresIn : "7d"
+            // })
+            const token = FoundUser.getJWT()
+            // console.log("OK")
             res.cookie("token", token).json({"msg" : "User logged in successfully"})
         }
         else

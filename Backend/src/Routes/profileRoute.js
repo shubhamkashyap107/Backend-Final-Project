@@ -25,13 +25,14 @@ router.get("/", isLoggedIn ,async(req, res) => {
 
 router.patch("/edit" , isLoggedIn, async(req, res) => {
     try {
-        const{firstName, lastName, username, DOB, interests} = req.body
+        const{firstName, lastName, DOB, bio, image} = req.body
         const id = req.ID
-        await User.findByIdAndUpdate({_id : id}, {firstName, lastName, username,DOB, interests }, 
-            {runValidators : true})
-        res.json({"msg" : "User updated successfully"})
+        let updatedUser = await User.findByIdAndUpdate({_id : id}, {firstName, lastName,DOB, bio, image }, 
+            {runValidators : true, new : true}).select("firstName lastName DOB bio image emailId username")
+            console.log(updatedUser)
+        res.status(202).json({"msg" : "User updated successfully", "data" : updatedUser})
     } catch (error) {
-        res.json({"error" : error.message})
+        res.status(400).json({"error" : error.message})
     }
 })
 
