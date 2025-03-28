@@ -56,6 +56,7 @@ router.get("/", isLoggedIn , async(req, res) => {
          {toUserId : req.User._id}
      ]
     })
+
  
     let set = new Set()
  
@@ -69,7 +70,12 @@ router.get("/", isLoggedIn , async(req, res) => {
     let allUsers = await User.find({
      $and : [
         { _id : {$nin : Array.from(set)}},
-        { _id : {$ne : req.User._id}}
+        { _id : {$ne : req.User._id}},
+        {"firstName" : {$exists : true}},
+        {"lastName" : {$exists : true}},
+        {"bio" : {$exists : true}},
+        {"DOB" : {$exists : true}},
+        {"image" : {$exists : true}},
      ]
     }).limit(limit).skip(skip)
  

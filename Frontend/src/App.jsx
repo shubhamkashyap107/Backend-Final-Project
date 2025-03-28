@@ -6,6 +6,8 @@ import Profile from './Components/Profile';
 import Home from './Components/Home';
 import MyProfile from './Components/MyProfile';
 
+
+
 const App = () => {
   return (
     <div>

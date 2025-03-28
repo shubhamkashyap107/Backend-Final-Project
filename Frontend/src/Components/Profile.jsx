@@ -105,7 +105,7 @@ const Profile = () => {
             // console.log(res)
             dispatch(addUser(res.data.data))
             toast.success(res.data.msg)
-            // navigate("/home")
+            navigate("/profile")
         }
         else
         {

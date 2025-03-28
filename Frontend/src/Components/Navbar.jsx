@@ -23,7 +23,7 @@ const Navbar = () => {
 
         {showDropdown ? (<div className='shadow-2xl rounded-2xl border border-gray-200 fixed right-0 top-20 flex flex-col w-[180px] p-3'>
           <Link to={"/home"}>Home</Link>
-          <Link to={"/profile/edit"}>Profile</Link>
+          <Link to={"/profile"}>Profile</Link>
           <Link to={"/connections"}>Connections</Link>
           <p className='cursor-pointer' onClick={() => {
             axios.get(baseUrl + "/auth/logout", {withCredentials : true})

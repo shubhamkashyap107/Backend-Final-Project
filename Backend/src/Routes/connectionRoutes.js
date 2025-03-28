@@ -39,7 +39,7 @@ router.post("/send/:status/:id", isLoggedIn, async(req, res) => {
                 status : status
         })
         await newReq.save()
-        res.json({"msg" : "OKAY"})
+        res.status(201).json({"msg" : "OKAY"})
     } catch (error) {
         res.json({"error" : error.message})
         
