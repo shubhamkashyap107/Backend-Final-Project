@@ -26,8 +26,6 @@ const MyProfile = () => {
 
   return (
     <div className='bg-gray-100 h-[100vh]'>
-      <Navbar />
-
       <div className="max-w-sm mx-auto bg-white shadow-xl rounded-2xl overflow-hidden p-6 text-center mt-20">
   <img
     src={userData.image}

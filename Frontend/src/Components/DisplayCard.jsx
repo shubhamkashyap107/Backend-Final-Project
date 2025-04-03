@@ -38,6 +38,9 @@ const DisplayCard = ({image, firstName, lastName, bio, DOB, id, feedData, setFee
     <div className="bg-white shadow-xl mx-auto mt-20 rounded-3xl p-6 max-w-sm text-center border border-gray-300  hover:shadow-2xl">
     <div className="relative">
         <img 
+            onError={(e) => {
+                e.target.src="https://media.istockphoto.com/id/1345109915/photo/young-beautiful-woman-stock-photo.webp?a=1&b=1&s=612x612&w=0&k=20&c=aSsoOe4Jr1EchEp4eoso_lNGKJ9QT8U_FnPRIcJJEa0="
+            }}
             src={image} 
             alt={firstName + " " + lastName} 
             className="w-36 h-36 object-cover rounded-full mx-auto border-4 border-pink-500" 

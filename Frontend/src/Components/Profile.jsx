@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from './Navbar';
 import axios from 'axios';
-import { baseUrl } from '../utils/constants';
+import { baseUrl, promptAI } from '../utils/constants';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUser } from '../utils/userSlice';
+import { GoogleGenAI } from "@google/genai";
+
+const ai = new GoogleGenAI({ apiKey: "AIzaSyD_P1qqLOdoUJZeJkQeEERW7_X6awegOCE" });
+
 
 const Profile = () => {
   const date = new Date()
@@ -26,9 +30,14 @@ const Profile = () => {
     const[DOB, setDOB] = useState(userSliceData.DOB || "")
     const[bio, setBio] = useState(userSliceData.bio || "")
 
+
+    useEffect(() => {
+      
+    }, [])
+
   return (
     <>
-    <Navbar />
+
     {userSliceData && 
     <div className="max-w-md mx-auto p-6 bg-white shadow-lg rounded-2xl space-y-4 mt-10 flex flex-col items-center">
         <img className='h-[150px] w-[150px] rounded-full' src={image} alt="" />
@@ -87,12 +96,31 @@ const Profile = () => {
       <textarea
       value={bio}
 
+
       onChange={(e) => {
         setBio(e.target.value)
       }}
         placeholder="Bio"
         className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 h-24 resize-none"
       />
+      <div className='w-[100%] flex justify-end'>
+
+        <p onClick={() => {
+          if(bio.length < 20)
+          {
+            toast.error("Please enter atleast 20 characters")
+            return
+          }
+          async function getAIRes() {
+            const response = await ai.models.generateContent({
+              model: "gemini-2.0-flash",
+              contents: promptAI + bio,
+            });
+            setBio(response.text)
+          }
+          getAIRes()
+        }} className='text-xs text-blue-400 cursor-pointer hover:text-blue-800'>Get AI Generated Bio</p>
+      </div>
     <button onClick={async() => {
         if(!firstName || !lastName || !DOB || !image || !bio)
         {

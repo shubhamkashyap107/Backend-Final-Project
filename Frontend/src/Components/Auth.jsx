@@ -6,13 +6,14 @@ import { useNavigate } from 'react-router-dom';
 import {baseUrl} from "../utils/constants"
 import { useDispatch } from 'react-redux';
 import { addUser } from '../utils/userSlice';
+import Navbar from './Navbar';
 
 const Auth = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const[isSignupPage, setIsSignupPage] = useState(true)
     const[emailId, setEmailId] = useState("")
-    const[username, setUsername] = useState("chotudon")
+    const[username, setUsername] = useState("shubhamkashyap")
     const[password, setPassword] = useState("Qwerty123!")
     const[showPassword, setShowPassword] = useState(false)
 
@@ -73,7 +74,10 @@ const Auth = () => {
     }
 
   return (
+    <>
+    <Navbar />
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      
       <div className="bg-white p-8 rounded-2xl shadow-lg w-96">
         <h2 className="text-2xl font-semibold text-center mb-6">{isSignupPage ? "Sign up" : "Log in"}</h2>
         <div className="space-y-4">
@@ -120,6 +124,8 @@ const Auth = () => {
         </div>
       </div>
     </div>
+    </>
+
   );
 };
 

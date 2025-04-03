@@ -31,7 +31,7 @@ const Home = () => {
       }
     async function getData() {
      
-      let res = await axios.get(baseUrl + `/user?limit=${limit}&skip=0`, {withCredentials : true})
+      let res = await axios.get(baseUrl + `/user?limit=${limit}`, {withCredentials : true})
       setFeedData(res.data)
       console.log(res.data)
     }
@@ -43,7 +43,7 @@ const Home = () => {
   }, [feedData])
 
   return !feedData.length ? <h1>No users found</h1> : <div>
-  <Navbar />
+
 
   {feedData.length && <DisplayCard feedData={feedData} setFeedData={setFeedData} id={feedData[0]._id} lastName={feedData[0].lastName} bio={feedData[0].bio} image={feedData[0].image} DOB={feedData[0].DOB} firstName={feedData[0].firstName} />}
 

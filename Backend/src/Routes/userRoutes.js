@@ -8,7 +8,19 @@ const { User } = require("../models/user")
 
 router.get("/connection-requests", isLoggedIn, async(req, res) => {
     try {
-        const allRequests = await ConnectionRequest.find({toUserId : req.User._id})
+        let allRequests = await ConnectionRequest.find(
+            {
+                $and : [
+                    {toUserId : req.User._id},
+                    {status : "interested"}
+                ]
+            }
+        ).populate("fromUsedId")
+        allRequests = allRequests.map((item) => {
+            const{_id} = item
+            const{username, image, bio, firstName, lastName, DOB} = item.fromUsedId
+            return {username, image, bio, firstName, lastName, DOB, _id}
+        })
         res.json(allRequests)
     } catch (error) {
         res.json({error : error.message})
@@ -37,6 +49,25 @@ router.get("/connections", isLoggedIn , async(req, res) => {
 
         }))
 
+        allConnections = allConnections.map((item) => {
+            if(item.toUserId.equals(req.User._id))
+            {
+                const{username, firstName, lastName, bio, image, DOB} = item.fromUsedId
+                return {username, firstName, lastName, bio, image, DOB}
+            }
+            else
+            {
+                const{username, firstName, lastName, bio, image, DOB} = item.toUserId
+                return {username, firstName, lastName, bio, image, DOB}
+            }
+        })
+
+
+        
+
+
+
+ 
         // console.log(allConnections)
         res.json(allConnections)
     } catch (error) {
