@@ -14,7 +14,7 @@ const Auth = () => {
     const[isSignupPage, setIsSignupPage] = useState(true)
     const[emailId, setEmailId] = useState("")
     const[username, setUsername] = useState("shubhamkashyap")
-    const[password, setPassword] = useState("Qwerty123!")
+    const[password, setPassword] = useState("Shubham28!*")
     const[showPassword, setShowPassword] = useState(false)
 
     function toggleBtnHandler()
@@ -47,6 +47,7 @@ const Auth = () => {
                     }
                     let res = await axios.post(baseUrl + "/auth/signup", {username, password, emailId}, {withCredentials : true})
                     console.log(res)
+                    dispatch(addUser(res.data.data))
                     navigate("/profile/edit")
                 }
                 else

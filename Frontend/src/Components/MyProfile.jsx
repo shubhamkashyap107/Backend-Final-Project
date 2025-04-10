@@ -39,13 +39,23 @@ const MyProfile = () => {
     {calculateAge(userData.DOB)} years old
   </span>
   <p className="text-gray-600 mt-3 px-4 italic">{userData.bio}</p>
-  <div className="mt-4">
-    <button onClick={() => {
-      navigate("/profile/edit")
-    }} className="bg-indigo-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-indigo-600 transition">
-      Edit profile
-    </button>
-  </div>
+  <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-evenly">
+  <button
+    onClick={() => navigate("/profile/edit")}
+    className="bg-indigo-500 text-white px-5 py-2 rounded-lg shadow hover:bg-indigo-600 transition"
+  >
+    Edit Profile
+  </button>
+
+  <button
+    onClick={() => navigate("/profile/edit/password")}
+
+    className="bg-gray-200 text-gray-800 px-5 py-2 rounded-lg shadow hover:bg-gray-300 transition"
+  >
+    Change Password
+  </button>
+</div>
+
 </div>
 
     </div>

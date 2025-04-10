@@ -7,6 +7,8 @@ import Home from './Components/Home';
 import MyProfile from './Components/MyProfile';
 import ProtectedRoutes from './Components/ProtectedRoutes';
 import Connections from './Components/Connections';
+import Chat from './Components/Chat';
+import EditPassword from './Components/EditPassword';
 
 
 
@@ -21,9 +23,12 @@ const App = () => {
           <Route path='/' element={<ProtectedRoutes />}>
 
             <Route path='/profile/edit' element={<Profile />} />
+            <Route path='/profile/edit/password' element={<EditPassword />} />
             <Route path='/home' element={<Home />} />
             <Route path='/profile' element={<MyProfile />} />
             <Route path='/connections' element={<Connections />} />
+            <Route path={`/chat/:receiverId`} element={<Chat />} />
+
         
           </Route>
    

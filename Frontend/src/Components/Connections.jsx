@@ -1,11 +1,17 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { baseUrl } from '../utils/constants'
+import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { addConnections } from '../utils/connectionSlice'
+
 
 const Connections = () => {
     const[selectValue, setSelectValue] = useState("my-connections")
     const[friends, setFriends] = useState([])
     const[requests, setRequests] = useState([])
+    const dispatch = useDispatch()
+
 
     async function btnClickHandler(status, id)
     {
@@ -16,16 +22,18 @@ const Connections = () => {
                 return item._id != id
             }))
         }
-        console.log(res)
+        
     }
 
     useEffect(() => {
+      console.log("Connections wala UE")
         async function getData()
         {
            if(selectValue == "my-connections")
            {
                 let res = await axios.get(baseUrl + "/user/connections", {withCredentials : true})
                 setFriends(res.data)
+                dispatch(addConnections(res.data))
                 console.log(res.data)
            }
            else
@@ -67,6 +75,7 @@ return (
               <h2 className="text-xl font-bold">{item.firstName} {item.lastName}</h2>
               <p className="text-gray-600">{item.bio}</p>
             </div>
+                {selectValue === "my-connections" && (<Link to={`/chat/${item._id}`} className='bg-blue-700 text-white px-4 rounded py-2'>Chat</Link>)}
             {selectValue === "connections-requests" && (
               <div className="flex gap-4 mt-4">
                 <button onClick={() => {

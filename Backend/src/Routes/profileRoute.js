@@ -10,7 +10,7 @@ router.get("/", isLoggedIn ,async(req, res) => {
    try {
     // console.log("OK")
     const id = req.User._id
-    const FoundUser = await User.findById({_id : id}).select("firstName lastName username DOB interests")
+    const FoundUser = await User.findById({_id : id}).select("firstName lastName username DOB bio image")
     // const FoundUser = req.User
     if(!FoundUser)
     {
@@ -18,7 +18,7 @@ router.get("/", isLoggedIn ,async(req, res) => {
     }
     res.status(200).json(FoundUser)
    } catch (error) {
-    res.json({"msg" : error.message})
+    res.status(404).json({"msg" : error.message})
    }
 })
 
@@ -58,7 +58,7 @@ router.patch("/edit/password", isLoggedIn, async(req ,res) => {
     await User.findByIdAndUpdate(req.ID, {password : hashedPassword}, {runValidators : true})
     res.json({"msg" : "Password updated successfully"})
    } catch (error) {
-    res.json({"error" : error.message})
+    res.status(400).json({"error" : error.message})
     
    }
 })

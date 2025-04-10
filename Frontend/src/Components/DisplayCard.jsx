@@ -2,7 +2,7 @@ import axios from 'axios';
 import React from 'react'
 import { baseUrl } from '../utils/constants';
 import { useDispatch } from 'react-redux';
-import { removeFeedData } from '../utils/feedSlice';
+
 
 const DisplayCard = ({image, firstName, lastName, bio, DOB, id, feedData, setFeedData}) => {
 

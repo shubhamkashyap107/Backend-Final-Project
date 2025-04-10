@@ -17,7 +17,7 @@ const isLoggedIn = async(req, res, next) => {
     req.ID = obj._id
     next()
    } catch (error) {
-    res.json({"msg" : "Please log in"})
+    res.status(404).json({"msg" : "Please log in"})
    }
 }
 

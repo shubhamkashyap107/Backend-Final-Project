@@ -19,7 +19,7 @@ router.post("/signup" ,async(req, res) => {
         let createdUser = await User.insertOne({username, emailId, password : hashedPassword})
         const token = createdUser.getJWT()
         res.cookie("token", token)
-        res.status(200).json({"msg" : "User registered successfully"})
+        res.status(200).json({"msg" : "User registered successfully", data : createdUser})
     } catch(e)
     {
         res.status(400).json({"msg" : "User already exists"})
@@ -43,9 +43,9 @@ router.post("/login", async(req, res) => {
             // })
             const token = FoundUser.getJWT()
             // console.log("OK")
-            const{firstName, lastName, image, bio, username, DOB} = FoundUser
+            const{firstName, lastName, image, bio, username, DOB, _id} = FoundUser
             res.cookie("token", token).json({"msg" : "User logged in successfully", data : {
-                firstName, lastName, image, bio, username, DOB
+                firstName, lastName, image, bio, username, DOB, _id
             }})
         }
         else

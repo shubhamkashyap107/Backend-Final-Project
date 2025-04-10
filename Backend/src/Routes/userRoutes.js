@@ -52,13 +52,13 @@ router.get("/connections", isLoggedIn , async(req, res) => {
         allConnections = allConnections.map((item) => {
             if(item.toUserId.equals(req.User._id))
             {
-                const{username, firstName, lastName, bio, image, DOB} = item.fromUsedId
-                return {username, firstName, lastName, bio, image, DOB}
+                const{username, firstName, lastName, bio, image, DOB, _id} = item.fromUsedId
+                return {username, firstName, lastName, bio, image, DOB, _id}
             }
             else
             {
-                const{username, firstName, lastName, bio, image, DOB} = item.toUserId
-                return {username, firstName, lastName, bio, image, DOB}
+                const{username, firstName, lastName, bio, image, DOB, _id} = item.toUserId
+                return {username, firstName, lastName, bio, image, DOB, _id}
             }
         })
 

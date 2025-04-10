@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react'
-import Navbar from './Navbar'
 import axios from 'axios'
 import { baseUrl } from '../utils/constants'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
-import { addFeed } from '../utils/feedSlice'
 import DisplayCard from './DisplayCard'
 import{useState} from "react"
 
@@ -15,13 +13,18 @@ const Home = () => {
   const navigate = useNavigate()
   const userData = useSelector(store => store.user)
   const[feedData, setFeedData] = useState([])
+  const[isDbEmpty, setIsDbEmpty] = useState(false)
   let limit = 3
 
 
 
   useEffect(() => {
 
-
+    if(isDbEmpty)
+    {
+      return
+    }
+  
 
     if(!userData.firstName || !userData.lastName || !userData.DOB || !userData.bio || !userData.image)
       {
@@ -33,12 +36,15 @@ const Home = () => {
      
       let res = await axios.get(baseUrl + `/user?limit=${limit}`, {withCredentials : true})
       setFeedData(res.data)
+      if(res.data.length == 0)
+      {
+        setIsDbEmpty(true)
+      }
       console.log(res.data)
     }
     if(feedData.length == 0)
     {
       getData()
-
     }
   }, [feedData])
 
