@@ -14,6 +14,7 @@ function connectToSocket()
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
+  // console.log(messages)
   const [msg, setMsg] = useState('');
   const socket = useRef()
   const{receiverId} = useParams()
@@ -22,18 +23,18 @@ const Chat = () => {
   const currUser = connectionSlice.find((item) => {
     return item._id == receiverId
   })
-  console.log(userSliceData._id, messages)
+  // console.log(userSliceData._id, messages)
   
 
   function btnClickHandler()
   {
-    if(input.length == 0)
+    if(msg.length == 0)
     {
         toast.error("Please Enter your msg")
         return
     }
-    socket.current.emit("sendMsg", {message : input, senderId : userSliceData._id, receiverId})
-    setInput("")
+    socket.current.emit("sendMsg", {message : msg, senderId : userSliceData._id, receiverId})
+    setMsg("")
   }
 
   useEffect(() => {
@@ -58,8 +59,14 @@ const Chat = () => {
           text, sender : senderId
         }
       })
-      // console.log(foundMsgs)
-      setMessages(foundMsgs)
+      if(!foundMsgs)
+      {
+        setMessages([])
+      }
+      else
+      {
+        setMessages(foundMsgs)
+      }
 
       
     }
@@ -85,7 +92,7 @@ const Chat = () => {
     {/* Messages */}
     <div className='flex flex-col h-[70vh] overflow-y-auto p-4 space-y-3 bg-gray-50'>
   {
-    messages.map((item, idx) => {
+    messages && messages.map((item, idx) => {
       const isSender = userSliceData._id === item.sender
       return (
         <div
@@ -109,6 +116,12 @@ const Chat = () => {
     <div className='border-t border-gray-200 p-3 flex items-center gap-2'>
       <input
         value={msg}
+        onKeyDown={(e) => {
+          if(e.key == "Enter")
+          {
+            btnClickHandler()
+          }
+        }}
         onChange={(e) => setMsg(e.target.value)}
         type="text"
         placeholder="Type your message..."

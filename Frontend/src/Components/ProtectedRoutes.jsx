@@ -12,8 +12,11 @@ import { addConnections } from '../utils/connectionSlice'
 const ProtectedRoutes = () => {
 
     const nav = useNavigate()
-
+    const userData = useSelector(store => store.user)
     const dispatch = useDispatch()
+
+
+
     useEffect(() => {
 
         const getUserData = async() => {
@@ -31,13 +34,13 @@ const ProtectedRoutes = () => {
     }, [])
 
 
-
-    const userData = useSelector(store => store.user)
-
-    if(!userData.firstName)
+    if(!userData.username)
     {
         return <Loader />
     }
+
+
+
 
     return userData.username ? <><Navbar /><Outlet /></> : <Navigate to={"/auth"} />
 }

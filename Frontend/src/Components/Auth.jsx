@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import validator, { isStrongPassword } from "validator"
 import toast, { Toaster } from 'react-hot-toast';
 import axios from "axios"
@@ -13,8 +13,8 @@ const Auth = () => {
     const navigate = useNavigate()
     const[isSignupPage, setIsSignupPage] = useState(true)
     const[emailId, setEmailId] = useState("")
-    const[username, setUsername] = useState("shubhamkashyap")
-    const[password, setPassword] = useState("Shubham28!*")
+    const[username, setUsername] = useState("")
+    const[password, setPassword] = useState("")
     const[showPassword, setShowPassword] = useState(false)
 
     function toggleBtnHandler()
@@ -73,6 +73,10 @@ const Auth = () => {
             }
         }
     }
+
+    useEffect(() => {
+      console.log("Auth UE chala")
+    }, [])
 
   return (
     <>

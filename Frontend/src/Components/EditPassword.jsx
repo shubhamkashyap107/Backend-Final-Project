@@ -1,13 +1,15 @@
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { baseUrl } from '../utils/constants'
 import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const EditPassword = () => {
   const [currentPassword, setCurrentPassword] = useState("")
   const [newPassword, setNewPassword] = useState("")
   const nav = useNavigate()
+  const userData = useSelector(store => store.user)
 
   const handlePasswordUpdate = async() => {
    try {
@@ -32,6 +34,16 @@ const EditPassword = () => {
    }
   }
 
+
+
+  useEffect(() => {
+    if(!userData.firstName || !userData.lastName || !userData.DOB || !userData.bio || !userData.image)
+      {
+        nav("/profile/edit")
+        toast.error("Please complete your profile")
+        return
+      }
+  }, [])
   return (
     <div className="min-h-[70vh] flex items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-md bg-white p-6 rounded-xl shadow-md">

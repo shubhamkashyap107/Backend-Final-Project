@@ -1,9 +1,10 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { baseUrl } from '../utils/constants'
-import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { addConnections } from '../utils/connectionSlice'
+import toast from 'react-hot-toast'
 
 
 const Connections = () => {
@@ -11,6 +12,11 @@ const Connections = () => {
     const[friends, setFriends] = useState([])
     const[requests, setRequests] = useState([])
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    const userData = useSelector(store => store.user)
+
+ 
 
 
     async function btnClickHandler(status, id)
@@ -24,6 +30,17 @@ const Connections = () => {
         }
         
     }
+
+
+
+    useEffect(() => {
+      if(!userData.firstName || !userData.lastName || !userData.DOB || !userData.bio || !userData.image)
+        {
+          navigate("/profile/edit")
+          toast.error("Please complete your profile")
+          return
+        }
+    }, [])
 
     useEffect(() => {
       console.log("Connections wala UE")
