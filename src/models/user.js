@@ -84,6 +84,8 @@ userSchema.methods.getJWT = function(){
         expiresIn : "7d"
     })
 
+    console.log(token)
+
     return token
 }
 
